@@ -1,0 +1,20 @@
+library(reshape2)
+pop = rnorm(30,2,1)
+SampleA = rnorm(10,1,0.5)
+SampleB = rnorm(10,2,0.5)
+SampleC = rnorm(10,1,0.5)
+pop = c(SampleA,SampleB,SampleC)
+sumofsquares <- function(x,mu){sum((x-mu)^2)}
+totss = sumofsquares(pop,mean(pop))
+withinss =  sumofsquares(SampleA,mean(SampleA))+
+            sumofsquares(SampleB,mean(SampleB))+
+            sumofsquares(SampleC,mean(SampleC))
+betweenss = 10*sumofsquares(c(mean(SampleA),mean(SampleB),mean(SampleC)),mean(pop))
+print(totss)
+print(withinss+betweenss)
+DFwithin = (10-1)+(10-1)+(10-1)
+DFbetween = (3-1)
+Fs = (betweenss/DFbetween)/(withinss/DFwithin)
+1-pf(Fs,df1 = 2,df2 = 27)
+data = melt(cbind(SampleA,SampleB,SampleC))
+summary(aov(value ~ Var2*Var3, data))
